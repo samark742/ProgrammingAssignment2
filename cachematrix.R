@@ -1,15 +1,38 @@
-## Put comments here that give an overall description of what your
-## functions do
+##  makeCacheMatrix is used to store matrix and and it inverse the value of argument for cacheSolve function. 
+## setmat function takes arugument j,which is matrix. setmat assign value to x and clear the value of inve when excetued from cacheSolve
+## getmat use lexical scoping by providing value of input matrix if previous cache data is clear.
+## setmatinverse function use <<- for providng value to inve in parent enviroment. 
+## getmatinverse function get the cache value for the result of inverse matrix using lexical scoping rule.
 
-## Write a short comment describing this function
+## mackeChackeMatrix has four functions setmat, getmat,setmatinverse, getmatinverse. These function are in parent enviromment and are called from cacheSolve function.
 
 makeCacheMatrix <- function(x = matrix()) {
+       inve<- NULL
+        setmat<-function(j){
+        x<<-j
+        inve<<-NULL
+        }
+      getmat<-function()x
+      setmatinverse<-function(inverse){
+              inve<<-inverse } 
+        getmatinverse<-function() inve
+        list(setmat= setmat,getmat=getmat,setmatinverse=setmatinverse,getmatinverse=getmatinverse)
 
 }
 
 
-## Write a short comment describing this function
+## cacheSolve function has argument of matrix x. It first called the function getmatinverse for cache value of avg.
+## if value of avg is not NULL then it show meaasge " getting cached data" else it calculate the inverse of matrix and return the result.
 
 cacheSolve <- function(x, ...) {
+        inve<-x$getmatinverse()
+if(!is.null(inve)){
+  message("getting cached data")
+  return(inve)
+}
+         data<-x$getmat() 
+        inve<-solve(data,...)
+        x$setmatinverse(inve)
+        inve
         ## Return a matrix that is the inverse of 'x'
 }
